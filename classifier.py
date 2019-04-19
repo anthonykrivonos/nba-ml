@@ -12,7 +12,7 @@ import numpy as np
 #
 ##
 
-DEFAULT_TOLERANCE = 0.1
+DEFAULT_TOLERANCE = 0.01
 
 class BinaryModel():
 
@@ -29,10 +29,10 @@ class BinaryModel():
             self.λ = np.zeros(len(data))
 
         # Define gradient descent w updater
-        dw = lambda xij, wj, λi, yi: (2 * wj) - ((λi if yi == 1 else 0) * xij)
+        dw = lambda xij, wj, λi, yi: (2 * wj) - ((λi if yi == 1 else -λi) * xij)
 
         # Define gradient ascent λ updater
-        dλ = lambda w, xi, yi: 1 - np.dot(xi[:-1], w[:-1]) - w[-1] if yi == 1 else 1
+        dλ = lambda w, xi, yi: 1 - np.dot(xi[:-1], w[:-1]) - w[-1] if yi == 1 else 1 + np.dot(xi[:-1], w[:-1]) + w[-1]
 
         # Re-learn iter times
         for _ in range(iter):
@@ -59,7 +59,7 @@ class BinaryModel():
         # Record result
         result = np.dot(features, self.w[:-1]) + self.w[-1]
         # Return classification
-        classification = 0 if result < DEFAULT_TOLERANCE else 1
+        classification = 0 if result < 0 else 1
         return classification
 
 ##

@@ -22,11 +22,8 @@ To run classification code:
 ## Authors
 
 * **Anthony Krivonos** - *Initial work* - [Portfolio](https://anthonykrivonos.com)
+* **Phil Tenteromano** - *Initial work*
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Vicki Shao 🔥

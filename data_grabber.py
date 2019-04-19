@@ -59,16 +59,27 @@ with open('data/gameslist.csv', mode='w') as games_file:
 
 # List of training headers
 training_headers = [
-    'PTS',
+    'MIN',
+    'FGM',
+    'FGA',
     'FG_PCT',
+    'FG3M',
+    'FG3A',
     'FG3_PCT',
+    'FTM',
+    'FTA',
     'FT_PCT',
+    'OREB',
+    'DREB',
     'REB',
     'AST',
     'STL',
     'BLK',
     'TOV',
-    'WL'
+    'PF',
+    'PTS',
+    'PLUS_MINUS',
+    'WL'            # Make sure WL is last
 ]
 training_indices = {}
 for header in training_headers:
@@ -81,17 +92,13 @@ with open('data/trainingdata.csv', mode='w') as training_file:
     training_writer.writerow(training_headers)
     # Write rows
     for data_row in data:
-        train_row = [
-            data_row[training_indices['PTS']],
-            data_row[training_indices['FG_PCT']],
-            data_row[training_indices['FG3_PCT']],
-            data_row[training_indices['FT_PCT']],
-            data_row[training_indices['REB']],
-            data_row[training_indices['AST']],
-            data_row[training_indices['STL']],
-            data_row[training_indices['BLK']],
-            data_row[training_indices['TOV']],
-            # Compute 1 for win, 0 for loss
-            (1 if data_row[training_indices['WL']] == 'W' else 0)
-        ]
+        train_row = []
+        for header in training_headers:
+            index = training_indices[header]
+            if (header == 'WL'):
+                # -1 for loss, 1 for win
+                raw = data_row[index]
+                train_row.append(1 if raw == 'W' else -1)
+            else:
+                train_row.append(data_row[index])
         training_writer.writerow(train_row)
